@@ -72,9 +72,7 @@ export const CoinProvider = ({ children }) => {
       `wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@ticker`
     );
 
-    client.onopen = () => {
-      console.log("WebSocket Client Connected");
-    };
+    client.onopen = () => {};
 
     client.onmessage = (message) => {
       handleWebSocketMessage(message);

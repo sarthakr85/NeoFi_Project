@@ -2,6 +2,7 @@ import DropdownSymbol from "../images/Vector381.png";
 import CoinContext from "../context/CoinContext";
 import { useContext, useState, useEffect } from "react";
 import Modal from "./Modal";
+import Spinner from "./Spinner";
 
 function MainCoinDisplayBox() {
   const { isLoading, openModal, isModalOpen, selectedCoin, price } =
@@ -30,7 +31,7 @@ function MainCoinDisplayBox() {
   }, [price]);
 
   if (isLoading) {
-    return <div>heelo</div>;
+    return <Spinner />;
   }
   return (
     <div className="container ml-6">
