@@ -1,0 +1,81 @@
+import { BsSearch } from "react-icons/bs";
+import { MdClose } from "react-icons/md";
+import { BiCheck } from "react-icons/bi";
+import { useContext, useState } from "react";
+import CoinContext from "../context/CoinContext";
+
+function Modal() {
+  const { coins, closeModal, selectedCoin, setSelectedCoin } =
+    useContext(CoinContext);
+  const [coinName, setCoinName] = useState("");
+  const [showCoins, setShowCoins] = useState(coins);
+
+  const onChange = (e) => {
+    const value = e.target.value;
+    setCoinName(value);
+
+    const updatedCoins = coins.filter((coin) => {
+      return coin.name.includes(e.target.value.toLowerCase());
+    });
+
+    setShowCoins(updatedCoins);
+  };
+
+  const onClick = (coin) => {
+    setSelectedCoin(coin);
+    closeModal();
+  };
+
+  return (
+    <>
+      <div className="modal-overlay" onClick={closeModal}></div>
+      <div className="modal-container">
+        <button className="modal-close-btn" onClick={closeModal}>
+          <MdClose />
+        </button>
+        <div className="modal-search-bar-container">
+          <BsSearch className="modal-search-bar-icon" />
+          <input
+            type="text"
+            placeholder="Search Chains"
+            className="modal-search-bar"
+            value={coinName}
+            onChange={onChange}
+          />
+        </div>
+
+        <div className="modal-coins-container">
+          {showCoins.map((coin, index) => (
+            <div
+              onClick={() => {
+                onClick(coin);
+              }}
+              key={index}
+              className={
+                coin.name === selectedCoin.name
+                  ? "modal-coin-display selected-coin"
+                  : "modal-coin-display"
+              }
+            >
+              <img
+                className="modal-coin-icon"
+                src={`data:image/svg+xml;utf8,${encodeURIComponent(
+                  coin.coinIcon
+                )}`}
+              />
+              <span className="modal-coin-text">{coin.name.toUpperCase()}</span>
+              {coin.name === selectedCoin.name ? (
+                <span>
+                  <BiCheck size="1.8rem" className="modal-coin-selected-tick" />
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+export default Modal;

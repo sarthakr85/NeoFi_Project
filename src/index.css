@@ -1,13 +1,429 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #1c1731;
+  border-radius: 9px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #0b0819;
+  border-radius: 9px;
+}
+
+.logo-text {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 44px;
+
+  background: linear-gradient(94.37deg, #3387d5 -5.94%, #7a06c9 115.34%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.navbar-btn-active {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+
+  text-transform: capitalize;
+
+  color: #627eea;
+
+  background-color: hsl(var(--n) / var(--tw-bg-opacity));
+  --tw-bg-opacity: 0;
+}
+
+.navbar-btn-deactivated {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+
+  text-transform: capitalize;
+
+  color: #5a5a5a;
+  background-color: hsl(var(--n) / var(--tw-bg-opacity));
+  --tw-bg-opacity: 0;
+}
+
+.navbar-dropdown-btn-active {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+
+  text-transform: capitalize;
+
+  color: #627eea;
+  border-bottom: 1px solid #627eea;
+
+  background-color: hsl(var(--n) / var(--tw-bg-opacity));
+  --tw-bg-opacity: 0;
+}
+
+.navbar-dropdown-btn-deactivated {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+
+  text-transform: capitalize;
+
+  color: #5a5a5a;
+
+  background-color: hsl(var(--n) / var(--tw-bg-opacity));
+  --tw-bg-opacity: 0;
+}
+
+.navbar-btn-end {
+  background: linear-gradient(94.37deg, #3387d5 -5.94%, #7a06c9 115.34%);
+  border-radius: 30px;
+
+  font-style: normal;
+  font-variant: small-caps;
+  font-weight: 500;
+  font-size: 15px;
+
+  color: #ffffff;
+
+  text-shadow: 0.364154px 0.364154px 0.364154px rgba(0, 0, 0, 0.25);
+}
+
+.navbar-underline {
+  position: relative;
+  width: 68px;
+  height: 0px;
+  left: 93px;
+  top: 48px;
+
+  border: 1px solid #627eea;
+}
+
+.container {
+  position: relative;
+  width: 25rem;
+  height: 30rem;
+
+  border: 1px solid #46425e;
+  border-radius: 18px;
+
+  background: #0b0819;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  width: 3.5rem;
+  height: 3.5rem;
+  left: 11rem;
+  bottom: 2rem;
+  border-radius: 2rem;
+  background: #1c1731;
+}
+
+.icon-pic {
+  left: 0.5rem;
+}
+
+.current-value-text {
+  position: relative;
+  right: 6.3rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+
+  color: #c5c5c5;
+}
+
+.coin-price {
+  position: relative;
+  left: 6rem;
+  bottom: 2rem;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+
+  color: #627eea;
+}
+
+.dropdown-menu-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 20rem;
+  height: 3rem;
+  bottom: 2rem;
+
+  background: #1c1731;
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.dropdown-menu-icon {
+  position: relative;
+  width: 1.5rem;
+
+  left: 1.5rem;
+}
+
+.dropdown-menu-name {
+  position: relative;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  left: 1.8rem;
+  color: #ffffff;
+
+  transform: rotate(0.63deg);
+}
+
+.dropdown-menu-dropdownIcon {
+  position: relative;
+  left: 14rem;
+}
+
+.text-above-entry-field-1 {
+  position: relative;
+  bottom: 1rem;
+  right: 3.7rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+
+  color: #dcdcec;
+}
+
+.value-entry-field-container {
+  position: relative;
+
+  width: 20rem;
+  height: 3rem;
+  left: 2.5rem;
+  border: 1px solid rgba(110, 86, 248, 0.25);
+  border-radius: 5px;
+  padding-right: 1rem;
+
+  background: #0b0819;
+}
+
+.value-entry-field {
+  position: relative;
+  width: 17rem;
+  height: 2.9rem;
+  right: 0.13rem;
+  border-radius: 5px;
+  padding-left: 1rem;
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+
+  color: #6f6f7e;
+
+  background: #0b0819;
+}
+
+.value-entry-field-currency {
+  position: relative;
+  bottom: 0.2rem;
+  left: 0.2rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+
+  color: #ffffff;
+}
+
+.text-above-entry-field-2 {
+  position: relative;
+  top: 0.8rem;
+  right: 1.9rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+
+  color: #dcdcec;
+}
+
+.value-return-field {
+  position: relative;
+  top: 1.7rem;
+  width: 20rem;
+  height: 3rem;
+
+  border: 1px solid rgba(110, 86, 248, 0.25);
+  border-radius: 5px;
+  padding-left: 1rem;
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+
+  color: #6f6f7e;
+
+  background: #1c1731;
+}
+
+.container-btn {
+  position: relative;
+  top: 4.2rem;
+  width: 20rem;
+  left: 0.1rem;
+  background: linear-gradient(94.37deg, #3387d5 -5.94%, #7a06c9 115.34%);
+  border-radius: 30px;
+
+  font-style: normal;
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: 1.6rem;
+  padding-bottom: 0.3rem;
+
+  color: #ffffff;
+
+  text-shadow: 0.364154px 0.364154px 0.364154px rgba(0, 0, 0, 0.25);
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-container {
+  position: relative;
+  box-sizing: border-box;
+  z-index: 1;
+
+  width: 21rem;
+  height: 25rem;
+  bottom: 18rem;
+  left: 2rem;
+
+  background: #181627;
+  border-radius: 18px;
+  border: 1px solid #46425e;
+}
+
+.modal-close-btn {
+  position: relative;
+  top: 0.6rem;
+  left: 9.3rem;
+  background: rgba(110, 86, 248, 0.15);
+  border-radius: 5px;
+}
+
+.modal-search-bar-container {
+  position: relative;
+  top: 1.2rem;
+  left: 2.2rem;
+  width: 16.5rem;
+  height: 3rem;
+  border: 1px solid rgba(110, 86, 248, 0.25);
+  border-radius: 30px;
+}
+
+.modal-search-bar-icon {
+  position: relative;
+  left: 0.7rem;
+  top: 0.9rem;
+}
+
+.modal-search-bar {
+  position: relative;
+  left: 1.2rem;
+  bottom: 1rem;
+  width: 14rem;
+  height: 2.9rem;
+  border-radius: 30px;
+
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+
+  color: #d2d2d2;
+
+  background: #181627;
+}
+
+.modal-coins-container {
+  position: relative;
+  padding-top: 1rem;
+  top: 3rem;
+  left: 2.54rem;
+  width: 16rem;
+  height: 16rem;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.modal-coin-display {
+  position: relative;
+  bottom: 1rem;
+
+  width: 15rem;
+  height: 3rem;
+  cursor: pointer;
+}
+
+.modal-coin-text {
+  position: relative;
+  right: 2.6rem;
+  bottom: 0.8rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.2rem;
+
+  color: #ffffff;
+}
+
+.modal-coin-icon {
+  position: relative;
+  top: 0.9rem;
+  left: 1rem;
+
+  width: 1.4rem;
+}
+
+.selected-coin {
+  background: #1b192d;
+  border-radius: 2px;
+}
+
+.modal-coin-selected-tick {
+  position: relative;
+  bottom: 2.6rem;
+  left: 12.4rem;
+
+  color: #58adab;
 }
