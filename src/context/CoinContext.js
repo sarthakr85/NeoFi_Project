@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useRef } from "react";
+import { createContext, useEffect, useRef, useReducer } from "react";
 import { binanceCryptoIcons } from "binance-icons";
 import axios from "axios";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
@@ -6,12 +6,43 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 const CoinContext = createContext();
 
 export const CoinProvider = ({ children }) => {
-  const [coins, setCoins] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCoin, setSelectedCoin] = useState();
-  const [price, setPrice] = useState();
-  const [exchangeRate, setExchangeRate] = useState(81.74);
+  const coinReducer = (state, action) => {
+    switch (action.type) {
+      case "SET_INITIAL_STATE":
+        return {
+          ...state,
+          coins: action.payload.coins,
+          exchangeRate: action.payload.exchangeRate,
+          isLoading: action.payload.isLoading,
+        };
+      case "SET_IS_MODAL_OPEN":
+        return {
+          ...state,
+          isModalOpen: action.payload,
+        };
+      case "SET_SELECTED_COIN":
+        return {
+          ...state,
+          selectedCoin: action.payload,
+        };
+      case "SET_PRICE":
+        return {
+          ...state,
+          price: action.payload,
+        };
+      default:
+        throw new Error("No Action");
+    }
+  };
+
+  const [state, dispatch] = useReducer(coinReducer, {
+    coins: [],
+    isLoading: true,
+    isModalOpen: false,
+    selectedCoin: null,
+    price: null,
+    exchangeRate: 81.74,
+  });
 
   const clientRef = useRef(null);
 
@@ -41,13 +72,23 @@ export const CoinProvider = ({ children }) => {
       const exchangeRateResponse = await axios.get(
         `https://openexchangerates.org/api/latest.json?app_id=${process.env.REACT_APP_EXCHANGE_RATE_API_ID}&symbols=INR`
       );
-      setExchangeRate(exchangeRateResponse.data.rates.INR);
 
       //Push all the coins info into state
-      setSelectedCoin(tempCoins[1]);
-      setCoins(tempCoins);
 
-      setIsLoading(false);
+      dispatch({
+        type: "SET_INITIAL_STATE",
+        payload: {
+          coins: tempCoins,
+
+          exchangeRate: exchangeRateResponse.data.rates.INR,
+          isLoading: false,
+        },
+      });
+
+      dispatch({
+        type: "SET_SELECTED_COIN",
+        payload: tempCoins[1],
+      });
     } catch (error) {
       console.log(error);
     }
@@ -55,10 +96,11 @@ export const CoinProvider = ({ children }) => {
 
   const handleWebSocketMessage = (message) => {
     const data = JSON.parse(message.data);
-    if (data.s === selectedCoin.symbol) {
+    if (data.s === state.selectedCoin.symbol) {
       const usdPrice = parseFloat(data.c);
-      const inrPrice = usdPrice * exchangeRate;
-      setPrice(inrPrice.toFixed(3));
+      const inrPrice = usdPrice * state.exchangeRate;
+
+      dispatch({ type: "SET_PRICE", payload: inrPrice.toFixed(3) });
     }
   };
 
@@ -86,30 +128,26 @@ export const CoinProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (selectedCoin) {
-      subscribeToWebSocket(selectedCoin.symbol);
+    if (state.selectedCoin) {
+      subscribeToWebSocket(state.selectedCoin.symbol);
     }
-  }, [selectedCoin]);
+  }, [state.selectedCoin]);
 
   const openModal = () => {
-    setIsModalOpen(true);
+    dispatch({ type: "SET_IS_MODAL_OPEN", payload: true });
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    dispatch({ type: "SET_IS_MODAL_OPEN", payload: false });
   };
 
   return (
     <CoinContext.Provider
       value={{
-        coins,
-        isLoading,
-        isModalOpen,
         openModal,
         closeModal,
-        selectedCoin,
-        setSelectedCoin,
-        price,
+        state,
+        dispatch,
       }}
     >
       {children}

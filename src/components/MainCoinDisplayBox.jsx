@@ -1,19 +1,18 @@
 import DropdownSymbol from "../images/Vector381.png";
 import CoinContext from "../context/CoinContext";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useReducer } from "react";
 import Modal from "./Modal";
 import Spinner from "./Spinner";
 
 function MainCoinDisplayBox() {
-  const { isLoading, openModal, isModalOpen, selectedCoin, price } =
-    useContext(CoinContext);
+  const { openModal, state } = useContext(CoinContext);
   const [amountEntered, setAmountEntered] = useState(0);
   const [amountUserWillGet, setAmountUserWillGet] = useState(0);
 
   const onChange = (e) => {
     const moneyEntered = e.target.value;
     if (moneyEntered >= 0) {
-      const coinRecieved = (moneyEntered / price).toFixed(10) ?? 0;
+      const coinRecieved = (moneyEntered / state.price).toFixed(10) ?? 0;
 
       setAmountEntered(moneyEntered);
       setAmountUserWillGet(coinRecieved);
@@ -27,10 +26,10 @@ function MainCoinDisplayBox() {
   };
 
   useEffect(() => {
-    setAmountUserWillGet((amountEntered / price).toFixed(10) ?? 0);
-  }, [price]);
+    setAmountUserWillGet((amountEntered / state.price).toFixed(10) ?? 0);
+  }, [state.price]);
 
-  if (isLoading) {
+  if (state.isLoading) {
     return <Spinner />;
   }
   return (
@@ -40,7 +39,7 @@ function MainCoinDisplayBox() {
           <div className="w-10 rounded-full">
             <img
               src={`data:image/svg+xml;utf8,${encodeURIComponent(
-                selectedCoin.coinIcon
+                state.selectedCoin.coinIcon
               )}`}
             />
           </div>
@@ -50,18 +49,18 @@ function MainCoinDisplayBox() {
       <div>
         <span className="current-value-text ">Current Value</span>
         <div>
-          <span className="coin-price">&#8377;{price}</span>
+          <span className="coin-price">&#8377;{state.price}</span>
         </div>
       </div>
       <div className="dropdown-menu-container ml-10 mt-4" onClick={openModal}>
         <img
           className="dropdown-menu-icon"
           src={`data:image/svg+xml;utf8,${encodeURIComponent(
-            selectedCoin.coinIcon
+            state.selectedCoin.coinIcon
           )}`}
         />
         <span className="dropdown-menu-name">
-          {selectedCoin.name.toUpperCase()}
+          {state.selectedCoin.name.toUpperCase()}
         </span>
 
         <img className="dropdown-menu-dropdownIcon" src={DropdownSymbol} />
@@ -84,7 +83,7 @@ function MainCoinDisplayBox() {
       </div>
 
       <div className="text-above-entry-field-2">
-        Estimate Number of {selectedCoin.name.toUpperCase()} You will Get
+        Estimate Number of {state.selectedCoin.name.toUpperCase()} You will Get
       </div>
 
       <input
@@ -96,7 +95,7 @@ function MainCoinDisplayBox() {
       />
 
       <a className="btn container-btn">Buy</a>
-      {isModalOpen && <Modal />}
+      {state.isModalOpen && <Modal />}
     </div>
   );
 }

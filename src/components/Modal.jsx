@@ -5,24 +5,24 @@ import { useContext, useState } from "react";
 import CoinContext from "../context/CoinContext";
 
 function Modal() {
-  const { coins, closeModal, selectedCoin, setSelectedCoin } =
-    useContext(CoinContext);
+  const { closeModal, state, dispatch } = useContext(CoinContext);
   const [coinName, setCoinName] = useState("");
-  const [showCoins, setShowCoins] = useState(coins);
+  const [showCoins, setShowCoins] = useState(state.coins);
 
   const onChange = (e) => {
     const value = e.target.value;
     setCoinName(value);
 
-    const updatedCoins = coins.filter((coin) => {
+    const filteredCoins = state.coins.filter((coin) => {
       return coin.name.includes(e.target.value.toLowerCase());
     });
 
-    setShowCoins(updatedCoins);
+    setShowCoins(filteredCoins);
   };
 
   const onClick = (coin) => {
-    setSelectedCoin(coin);
+    // setSelectedCoin(coin);
+    dispatch({ type: "SET_SELECTED_COIN", payload: coin });
     closeModal();
   };
 
@@ -52,7 +52,7 @@ function Modal() {
               }}
               key={index}
               className={
-                coin.name === selectedCoin.name
+                coin.name === state.selectedCoin.name
                   ? "modal-coin-display selected-coin"
                   : "modal-coin-display"
               }
@@ -64,7 +64,7 @@ function Modal() {
                 )}`}
               />
               <span className="modal-coin-text">{coin.name.toUpperCase()}</span>
-              {coin.name === selectedCoin.name ? (
+              {coin.name === state.selectedCoin.name ? (
                 <span>
                   <BiCheck size="1.8rem" className="modal-coin-selected-tick" />
                 </span>
